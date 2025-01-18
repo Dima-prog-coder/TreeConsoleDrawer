@@ -5,16 +5,6 @@ import java.util.List;
 
 public class TreeNode implements Node {
     private String value;
-    private Cord fxCord;
-
-    public Cord getFxCord() {
-        return fxCord;
-    }
-
-    public void setFxCord(Cord fxCord) {
-        this.fxCord = fxCord;
-    }
-
     private final List<Node> childrenList = new ArrayList<>();
 
     public TreeNode(String value) {
@@ -46,10 +36,6 @@ public class TreeNode implements Node {
     @Override
     public String toString() {
         return "|" + value + "|";
-    }
-
-    public void drawTree(String separator, String nextLevel, boolean isLast) {
-
     }
 }
 
