@@ -45,7 +45,7 @@ public class Segment {
 
     public static int calcCenterPositionForWrappedNode(NodeWrapper nodeWrapper) {
         int noSymbolsLength = nodeWrapper.getSegment().getLength() - nodeWrapper.getValue().length();
-        return noSymbolsLength / 2 - (nodeWrapper.getValue().length() % 2 == 0 ? 1 : 0);
+        return noSymbolsLength / 2;
     }
 
     public static Segment getSegmentBetweenFirstAndLastChild(NodeWrapper nodeWrapper) {
@@ -53,8 +53,8 @@ public class Segment {
         NodeWrapper lastChild = nodeWrapper.getWrappedChildrenList().getLast();
         Segment segment = nodeWrapper.getSegment();
         if (firstChild == lastChild) {
-            return new Segment(segment.getStartX() + calcCenterPositionForWrappedNode(nodeWrapper) + nodeWrapper.getValue().length() / 2, segment.getStartX() + calcCenterPositionForWrappedNode(nodeWrapper) + nodeWrapper.getValue().length() / 2, segment.yCord + 2);
+//            return new Segment(segment.getStartX() + calcCenterPositionForWrappedNode(nodeWrapper) + nodeWrapper.getValue().length() / 2 - (firstChild.getValue().length() % 2 == 0 ? 1 : 0), segment.getStartX() + calcCenterPositionForWrappedNode(nodeWrapper) + nodeWrapper.getValue().length() / 2 - (firstChild.getValue().length() % 2 == 0 ? 1 : 0), segment.yCord + 2);
         }
-        return new Segment(firstChild.getSegment().startX + calcCenterPositionForWrappedNode(firstChild) + firstChild.getValue().length() / 2, lastChild.getSegment().startX + calcCenterPositionForWrappedNode(lastChild) + lastChild.getValue().length() / 2, segment.yCord + 2);
+        return new Segment(firstChild.getSegment().startX + calcCenterPositionForWrappedNode(firstChild) + firstChild.getValue().length() / 2 - (firstChild.getValue().length() % 2 == 0 ? 1 : 0), lastChild.getSegment().startX + calcCenterPositionForWrappedNode(lastChild) + lastChild.getValue().length() / 2 - (lastChild.getValue().length() % 2 == 0 ? 1 : 0), segment.yCord + 2);
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 public class NodeWrapper {
     private final Node node;
+    private String customValue;
     private Segment segment;
     private final List<NodeWrapper> wrappedChildrenList = new ArrayList<>();
     private int requiredChildWidth = 0;
@@ -33,7 +34,11 @@ public class NodeWrapper {
     }
 
     public String getValue() {
-        return node.getValue();
+        return customValue == null ? node.getValue() : customValue;
+    }
+
+    public void setValue(String customValue) {
+        this.customValue = customValue;
     }
 
     public List<NodeWrapper> getWrappedChildrenList() {

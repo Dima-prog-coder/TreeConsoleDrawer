@@ -28,27 +28,34 @@ public class Drawer {
 
     public static NodeWrapper prepareToDraw(Node head) {
         NodeWrapper headWrapped = DrawUtils.wrap(head);
-        headWrapped.setSegment(new Segment(0, headWrapped.getRequiredChildWidth(), 1));
+        headWrapped.setSegment(new Segment(1, headWrapped.getRequiredChildWidth(), 1));
         calcPositions(headWrapped);
         return headWrapped;
     }
 
     public static void drawVisual(NodeWrapper head) {
-        Segment segment = head.getSegment();
         if (head.getWrappedChildrenList().isEmpty()) {
-            System.out.print(Ansi.ansi().cursor(segment.getyCord() - 1, segment.getStartX() + calcCenterPositionForWrappedNode(head) + head.getValue().length() / 2).a("|"));
-            System.out.print(Ansi.ansi().cursor(segment.getyCord(), segment.getStartX() + calcCenterPositionForWrappedNode(head)).a(head.getValue()));
+            printGraphics(head, true);
             return;
         }
+        printGraphics(head, false);
+        head.getWrappedChildrenList().forEach(Drawer::drawVisual);
+    }
+
+    public static void printGraphics(NodeWrapper head, boolean isLast) {
+        Segment segment = head.getSegment();
+        int isOdd = head.getValue().length() % 2 == 0 ? 1 : 0;
         if (segment.getyCord() != 1) {
-            System.out.print(Ansi.ansi().cursor(segment.getyCord() - 1, segment.getStartX() + calcCenterPositionForWrappedNode(head) + head.getValue().length() / 2).a("|"));
+            System.out.print(Ansi.ansi().cursor(segment.getyCord() - 1, segment.getStartX() + calcCenterPositionForWrappedNode(head) + head.getValue().length() / 2 - isOdd).a("|"));
         }
         System.out.print(Ansi.ansi().cursor(segment.getyCord(), segment.getStartX() + calcCenterPositionForWrappedNode(head)).a(head.getValue()));
-        System.out.print(Ansi.ansi().cursor(segment.getyCord() + 1, segment.getStartX() + calcCenterPositionForWrappedNode(head) + head.getValue().length() / 2).a("|"));
+        if (isLast) {
+            return;
+        }
+        System.out.print(Ansi.ansi().cursor(segment.getyCord() + 1, segment.getStartX() + calcCenterPositionForWrappedNode(head) + head.getValue().length() / 2 - isOdd).a("|"));
         Segment line = getSegmentBetweenFirstAndLastChild(head);
         for (int xStart = line.getStartX(); xStart < line.getEndX() + 1; xStart++) {
             System.out.print(Ansi.ansi().cursor(line.getyCord(), xStart).a("-"));
         }
-        head.getWrappedChildrenList().forEach(Drawer::drawVisual);
     }
 }
