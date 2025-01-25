@@ -1,4 +1,4 @@
-package ru.vsu.cs.dplatov.vvp.task12.utils;
+package ru.vsu.cs.dplatov.vvp.task12.node;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,6 +7,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+
+/**
+ * Base parser to use standard realization of the parsing and to use standard Program class
+ */
 public class Parser {
     private static final Pattern pattern1 = Pattern.compile("[^(),\\s]+");
 

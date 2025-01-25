@@ -1,5 +1,7 @@
 package ru.vsu.cs.dplatov.vvp.task12.utils;
 
+import ru.vsu.cs.dplatov.vvp.task12.node.NodeWrapper;
+
 public class Segment {
     private int startX;
     private int endX;
@@ -32,29 +34,32 @@ public class Segment {
         return startX + " - " + endX;
     }
 
+    /**
+     * Divides and distributes nodeWrapper's segment to every child
+     *
+     * @param head - parent
+     */
     public static void divideBigSegmentForChildren(NodeWrapper head) {
         Segment segment = head.getSegment();
-        int extraSpace = segment.getLength() - head.getWrappedChildrenList().stream().map(NodeWrapper::getRequiredChildWidth).mapToInt(Integer::intValue).sum();
+        int extraSpace = segment.getLength() - head.getWrappedChildrenList().stream().map(NodeWrapper::getRequiredWidth).mapToInt(Integer::intValue).sum();
         int leftBorder = segment.startX;
         int newY = segment.yCord + 4;
         for (NodeWrapper child : head.getWrappedChildrenList()) {
-            child.setSegment(new Segment(leftBorder, leftBorder + child.getRequiredChildWidth() + extraSpace / head.getWrappedChildrenList().size(), newY));
-            leftBorder = leftBorder + child.getRequiredChildWidth();
+            child.setSegment(new Segment(leftBorder, leftBorder + child.getRequiredWidth() + extraSpace / head.getWrappedChildrenList().size(), newY));
+            leftBorder = leftBorder + child.getRequiredWidth();
         }
     }
 
-    public static int calcCenterPositionForWrappedNode(NodeWrapper nodeWrapper) {
-        int noSymbolsLength = nodeWrapper.getSegment().getLength() - nodeWrapper.getValue().length();
-        return noSymbolsLength / 2;
-    }
-
+    /**
+     * Takes first and last child for nodeWrapper and finds segment between them centres (usage: printing -------)
+     *
+     * @param nodeWrapper - current drawing object
+     * @return new Segment between the center of first child and center of the last child
+     */
     public static Segment getSegmentBetweenFirstAndLastChild(NodeWrapper nodeWrapper) {
-        NodeWrapper firstChild = nodeWrapper.getWrappedChildrenList().getFirst();
-        NodeWrapper lastChild = nodeWrapper.getWrappedChildrenList().getLast();
+        NodeWrapper firstChild = nodeWrapper.getWrappedChildrenList().get(0);
+        NodeWrapper lastChild = nodeWrapper.getWrappedChildrenList().get(nodeWrapper.getWrappedChildrenList().size() - 1);
         Segment segment = nodeWrapper.getSegment();
-        if (firstChild == lastChild) {
-//            return new Segment(segment.getStartX() + calcCenterPositionForWrappedNode(nodeWrapper) + nodeWrapper.getValue().length() / 2 - (firstChild.getValue().length() % 2 == 0 ? 1 : 0), segment.getStartX() + calcCenterPositionForWrappedNode(nodeWrapper) + nodeWrapper.getValue().length() / 2 - (firstChild.getValue().length() % 2 == 0 ? 1 : 0), segment.yCord + 2);
-        }
-        return new Segment(firstChild.getSegment().startX + calcCenterPositionForWrappedNode(firstChild) + firstChild.getValue().length() / 2 - (firstChild.getValue().length() % 2 == 0 ? 1 : 0), lastChild.getSegment().startX + calcCenterPositionForWrappedNode(lastChild) + lastChild.getValue().length() / 2 - (lastChild.getValue().length() % 2 == 0 ? 1 : 0), segment.yCord + 2);
+        return new Segment(firstChild.getSegment().startX + firstChild.getSegment().getLength() / 2, lastChild.getSegment().startX + lastChild.getSegment().getLength() / 2, segment.yCord + 2);
     }
 }

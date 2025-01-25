@@ -3,6 +3,7 @@ package ru.vsu.cs.dplatov.vvp.task12;
 import org.apache.commons.cli.*;
 
 import static ru.vsu.cs.dplatov.vvp.task12.Drawer.mainDraw;
+import static ru.vsu.cs.dplatov.vvp.task12.node.Parser.buildTree;
 
 public class Program {
     public static final String PROGRAM_NAME_IN_HELP = "program (-h | -i <valid string for tree>)";
@@ -40,7 +41,7 @@ public class Program {
 
         if (cmdLine.hasOption("i")) {
             try {
-                mainDraw(cmdLine.getOptionValue("i"));
+                mainDraw(buildTree(cmdLine.getOptionValue("i")));
             } catch (Exception e) {
                 new HelpFormatter().printHelp(PROGRAM_NAME_IN_HELP, cmdLineOptions);
                 System.exit(2);
